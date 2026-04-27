@@ -1,81 +1,230 @@
-# 📰 AI-Powered Personalized News Digest
+---
 
-A multi-agent news intelligence system that fetches, filters, and summarizes news articles into a clean, personalized digest.
+# 📰 AI-Powered Personalized News Digest (v2.0)
 
-Built using **LangChain**, **OpenRouter (LLMs)**, and **Streamlit**.
+An **AI agent-based news intelligence system** that fetches, filters, and summarizes news articles into a personalized digest.
+
+Built with **LangChain**, **LangGraph**, **LangSmith**, **OpenRouter**, and **Streamlit**.
 
 ---
 
 ## 🚀 Features
 
-* 🔍 Fetches news from multiple sources (NewsAPI + Google News)
-* 🎯 Filters and ranks articles using LLM-based relevance scoring
-* ✍️ Generates clean, structured summaries
-* 🧠 Multi-agent architecture (Fetcher → Filter → Summarizer)
-* ⚡ Fast and scalable pipeline
-* 🎨 Interactive Streamlit UI
+✅ Fetches news from multiple sources (**NewsAPI + Google News**)
+✅ Uses **LLM-powered filtering** to rank article relevance
+✅ Removes duplicate/noisy articles
+✅ Generates structured topic-wise news digests
+✅ Interactive **Streamlit UI**
+✅ **LangGraph-powered workflow orchestration**
+✅ **LangSmith tracing for debugging & observability**
+✅ **Evaluation pipeline** for measuring agent performance
 
 ---
 
-## 🧩 Architecture
+# 🧠 Version Evolution
 
+| Version  | Description                                             |
+| -------- | ------------------------------------------------------- |
+| **v1.0** | Basic multi-agent pipeline → Fetch → Filter → Summarize |
+| **v2.0** | Added LangGraph workflow control                        |
+| **v2.1** | Added LangSmith tracing/debugging                       |
+| **v2.2** | Added evaluation framework for measuring agent quality  |
+
+---
+
+# 🏗️ System Architecture
+
+### Before (v1)
+
+```text
+User Input → Fetch → Filter → Summarize → UI
 ```
-User Input → Fetch (Python) → Filter (LLM) → Summarize (LLM) → UI
+
+---
+
+### Current Architecture (v2.2)
+
+```text
+User Input
+   ↓
+LangGraph Orchestrator
+   ↓
+Fetch Node
+   ↓
+Filter Node
+   ↓
+Summarize Node
+   ↓
+Streamlit UI
+
+        +
+LangSmith Tracing
+        +
+Evaluation Framework
 ```
 
-### Agents:
+---
 
-* **Fetcher (Python)** → Collects raw articles
-* **Filter Agent (LLM)** → Scores relevance & removes duplicates
-* **Summarizer Agent (LLM)** → Creates readable digest
+# 🤖 Agents / Nodes
 
 ---
 
-## 📸 Output
+## 1. Fetch Agent
 
-* Topic-wise digest
-* Key highlights
-* Article summaries
-* Source links with relevance scores
+**Type:** Python Tool Layer
+
+Responsibilities:
+
+* Fetch articles from NewsAPI
+* Fetch articles from Google News
+* Merge results
 
 ---
 
-## 🛠️ Tech Stack
+## 2. Filter Agent
+
+**Type:** LLM Agent
+
+Responsibilities:
+
+* Score article relevance
+* Remove duplicates
+* Rank top articles
+
+---
+
+## 3. Summarizer Agent
+
+**Type:** LLM Agent
+
+Responsibilities:
+
+* Generate concise digest
+* Highlight key developments
+* Provide article summaries
+
+---
+
+## 4. LangGraph Controller
+
+**Type:** Workflow Layer
+
+Responsibilities:
+
+* Controls execution flow
+* Maintains shared state
+* Coordinates nodes
+
+---
+
+# 🔍 LangSmith Observability
+
+Integrated **LangSmith** for:
+
+* Execution tracing
+* Llm call debugging
+* Token monitoring
+* Latency tracking
+* Failure analysis
+
+Example trace:
+
+```text
+run_graph
+ ├── fetch_node
+ ├── filter_node
+ └── summarize_node
+```
+
+---
+
+# 📊 Evaluation Framework
+
+Built an evaluation pipeline to measure agent performance.
+
+### Evaluation Flow
+
+```text
+Test Dataset → Agent → Llm Judge → Score → Results
+```
+
+### Metrics
+
+* Relevance
+* Clarity
+* Coverage
+
+### Current Average Score
+
+**7.5/10**
+
+---
+
+# 🛠️ Tech Stack
 
 * Python
 * LangChain
-* OpenRouter (LLMs)
+* LangGraph
+* LangSmith
+* OpenRouter
 * Streamlit
 * NewsAPI
-* Google News
+* Google News RSS
 
 ---
 
-## ⚙️ Installation
+# 📂 Project Structure
 
 ```bash
-git clone https://github.com/your-username/news-digest.git
-cd news-digest
-python -m venv venv
-venv\Scripts\activate   # Windows
+news-project/
+│
+├── app.py
+├── graph.py
+├── evaluation.py
+├── config.py
+│
+├── agents/
+│   ├── orchestrator.py
+│   ├── fetcher.py
+│   ├── filter.py
+│   ├── summarizer.py
+│
+├── tools/
+│   ├── newsapi_tool.py
+│   ├── google_news_tool.py
+│
+└── README.md
+```
+
+---
+
+# ⚙️ Installation
+
+```bash
+git clone <your_repo_url>
+cd news-project
 pip install -r requirements.txt
 ```
 
 ---
 
-## 🔑 Environment Variables
+# Environment Variables
 
-Create a `.env` file:
+Create `.env`
 
-```
+```env
+NEWSAPI_KEY=your_key
 OPENROUTER_API_KEY=your_key
 OPENROUTER_MODEL=your_model
-NEWSAPI_KEY=your_newsapi_key
+
+LANGCHAIN_API_KEY=your_langsmith_key
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_PROJECT=news-agent
 ```
 
 ---
 
-## ▶️ Run the App
+# Run Application
 
 ```bash
 streamlit run app.py
@@ -83,52 +232,44 @@ streamlit run app.py
 
 ---
 
-## 🧠 How It Works
+# Run Evaluation
 
-1. User enters topics and keywords
-2. System fetches news from APIs
-3. LLM filters and ranks articles
-4. LLM generates a clean digest
-5. Results displayed in UI
+```bash
+python evaluation.py
+```
 
 ---
 
-## ⚡ Performance Optimizations
+# Future Improvements
 
-* Parallel processing for topics
-* Reduced token usage
-* Deduplication before LLM
-* Caching support
-
----
-
-## 💼 Use Cases
-
-* Personalized news dashboards
-* AI-powered research tools
-* Content aggregation systems
-* Daily news automation
+* Retry mechanisms
+* Memory for tracking long-term trends
+* Multi-agent collaboration
+* Personalized recommendations
+* Real-time alerts
 
 ---
 
-## 📌 Future Improvements
+# Key Learning Outcomes
 
-* LangGraph workflow
-* Real-time streaming updates
-* Vector DB (RAG memory)
-* Sentiment analysis
-* Deployment (AWS / Render)
+This project helped me learn:
 
----
-
-## 👨‍💻 Author
-
-Shiva Kumar Billana
-
-Nithin Chandra Maddi
+✅ Multi-agent systems
+✅ LangGraph orchestration
+✅ LangSmith debugging
+✅ LLM evaluation pipelines
+✅ Production-style AI workflows
 
 ---
 
-## ⭐ If you like this project
+## Final Outcome
 
-Give it a star ⭐ on GitHub!
+This project evolved from a simple news summarizer into a **production-style AI agent system** focused on:
+
+**Control → Observability → Evaluation**
+
+## 👤 Author
+
+1. Shiva Kumar Billana
+
+2. Nithin Chandra
